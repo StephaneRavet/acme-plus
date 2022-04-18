@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ACME</title>
+	<link rel="stylesheet" href="/assets/css/acme.css">
+</head>
+
+<body>
+	<header>
+		<div class="user">LEFORT Max [Administrateur]</div>
+	</header>
+	<main>
+		<div class="category">
+			<a href="/category/crud">Catégories</a> &gt; Editer
+		</div>
+		<div class="error"></div>
+		<form name="form1" action="/category/save" method="POST">
+			<input type="hidden" name="categoryId" value="" />
+			<div class="item">
+				<label>Nom</label>
+				<input name="name" value="" size="20" maxlength="50" required="required" />
+			</div>
+			<div class="item">
+				<label></label>
+				<a href="/category/crud"><input type="button" value="Annuler" /></a>
+				<input type="submit" name="submit" value="Valider" />
+			</div>
+		</form>
+	</main>
+	<footer></footer>
+</body>
+
+</html>

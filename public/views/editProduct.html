@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ACME</title>
+	<link rel="stylesheet" href="/assets/css/acme.css">
+</head>
+
+<body>
+	<header>
+		<div class="user">LEFORT Max [Administrateur]</div>
+	</header>
+	<main>
+		<div class="category">
+			<a href="/product/crud">Produits</a> &gt; Editer
+		</div>
+		<div class="error"></div>
+		<form name="form1" action="/product/save" method="POST" enctype="multipart/form-data">
+			<input type="hidden" name="productId" value="" />
+			<div class="item">
+				<label>Catégorie</label>
+				<select name="categoryId">
+					<option value="1">Alpinisme</option>
+					<option value="3">Escalade</option>
+					<option value="2">Randonnée</option>
+				</select>
+			</div>
+			<div class="item">
+				<label>Nom</label>
+				<input name="name" value="" size="20" maxlength="50" required="required" />
+			</div>
+			<div class="item">
+				<label>Référence</label>
+				<input name="ref" value="" size="10" maxlength="10" required="required" />
+			</div>
+			<div class="item">
+				<label>Prix</label>
+				<input type="number" name="price" value="" min="0.01" max="9999.99" step="0.01" size="7" maxlength="7"
+					required="required" />
+			</div>
+			<div class="item">
+				<label>Photo (JPEG)</label>
+				<input type="file" name="photo" onchange="fonctionDeTraitement()" accept="image/jpeg" />
+				<input type="button" value="Parcourir..." onclick="this.form.photo.click()" />
+			</div>
+			<div class="item">
+				<label></label>
+				<a href="/product/crud"><input type="button" value="Annuler" /></a>
+				<input type="submit" name="submit" value="Valider" />
+			</div>
+		</form>
+		<div id="thumbnail">
+			<img src="/assets/img/products/product_0.jpg" alt="" />
+		</div>
+	</main>
+	<footer></footer>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ACME</title>
+	<link rel="stylesheet" href="/assets/css/acme.css">
+</head>
+
+<body>
+	<header>
+		<div class="user">LEFORT Max [Administrateur]</div>
+	</header>
+	<main>
+		<div class="category">
+			<a href="/dealer/crud">Revendeurs</a> &gt; Editer
+		</div>
+		<div class="error"></div>
+		<form name="form1" action="/user/save" method="POST">
+			<input type="hidden" name="userId" value="" />
+			<div class="item">
+				<label>Nom</label>
+				<input name="surname" value="" size="30" maxlength="50" required="required" />
+			</div>
+			<div class="item">
+				<label>Prénom</label>
+				<input name="firstname" value="" size="20" maxlength="50" required="required" />
+			</div>
+			<div class="item">
+				<label>Email</label>
+				<input name="email" value="" size="25" maxlength="50" required="required" />
+			</div>
+			<div class="item">
+				<label>TMC</label>
+				<input type="number" name="CMR" value="" min="0.01" max="99.99" step="0.01" size="5" maxlength="5" required="required" />
+			</div>
+			<div class="item">
+				<label></label>
+				<a href="/dealer/crud"><input type="button" value="Annuler" /></a>
+				<input type="submit" name="submit" value="Valider" />
+			</div>
+		</form>
+	</main>
+	<footer></footer>
+</body>
+
+</html>
