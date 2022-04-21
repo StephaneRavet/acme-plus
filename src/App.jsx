@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 
 import Connection from './pages/Connection'
+import ProductCollection from './pages/ProductCollection'
 
 function App () {
   return (
@@ -10,7 +11,8 @@ function App () {
         <Navbar/>
       </div>
       <Routes>
-        <Route path="/" element={<Connection/>}/>
+        <Route path="/" element={<ProductCollection/>}/>
+        <Route path="/login" element={<Connection/>}/>
       </Routes>
     </div>
   )

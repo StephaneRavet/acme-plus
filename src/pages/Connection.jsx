@@ -2,11 +2,13 @@ import React, { useState, useContext } from 'react'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { Context } from '../context'
 
 function Connection (props) {
   const [error, setError] = useState(null)
   const { dispatch } = useContext(Context)
+  const navigate = useNavigate()
   return (
     <div className="container">
       <h1>Connexion</h1>
@@ -29,6 +31,7 @@ function Connection (props) {
             const res = await axios.post('/user/login', { email, password })
             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
             dispatch({ type: 'login', payload: email })
+            navigate('/')
           } catch (error) {
             setError(error.message)
           }

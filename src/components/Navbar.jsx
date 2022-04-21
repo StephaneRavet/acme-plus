@@ -1,9 +1,19 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Context } from '../context'
+import axios from 'axios'
 
 function Navbar (props) {
-  const {context} = useContext(Context)
+  const { context, dispatch } = useContext(Context)
+  const logout = useCallback(async () => {
+    try {
+      await axios.get('/user/logout')
+      axios.defaults.headers.common['Authorization'] = null
+      dispatch({ type: 'logout' })
+    } catch (error) {
+      console.error(error)
+    }
+  }, [dispatch])
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -21,7 +31,14 @@ function Navbar (props) {
           </ul>
         </div>
         <div className="d-flex">
-          {context.user}
+          {
+            context.user
+              ? <div className="flex-align-center">
+                {context.user}
+                <button onClick={logout} className="btn btn-link">Déconnexion</button>
+              </div>
+              : <Link to="/login">Connexion</Link>
+          }
         </div>
       </div>
     </nav>
