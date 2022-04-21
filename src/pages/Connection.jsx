@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import axios from "axios"
+import axios from 'axios'
+import { Context } from '../context'
 
 function Connection (props) {
-  const [error,setError] = useState()
+  const [error, setError] = useState(null)
+  const { dispatch } = useContext(Context)
   return (
     <div className="container">
       <h1>Connexion</h1>
-      <div className="alert alert-danger"></div>
+      {error && <div className="alert alert-danger">{error}</div>}
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={Yup.object({
@@ -22,9 +24,13 @@ function Connection (props) {
         })}
         onSubmit={async (values) => {
           try {
-            const res = await axios.post('/user/login')
+            setError(null)
+            const { email, password } = values
+            const res = await axios.post('/user/login', { email, password })
+            axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
+            dispatch({ type: 'login', payload: email })
           } catch (error) {
-
+            setError(error.message)
           }
         }}
       >

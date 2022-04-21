@@ -4,12 +4,19 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { ContextProvider } from './context'
+
+// TODO: remove
+import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost:3003'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App/>
+      <ContextProvider>
+        <App/>
+      </ContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )
