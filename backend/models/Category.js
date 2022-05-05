@@ -1,7 +1,7 @@
-
 module.exports = (sequelize, DataTypes) => {
-  
-    const Category = sequelize.define("category", {
+  const Category = sequelize.define(
+    'category',
+    {
       categoryId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -9,15 +9,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: {
         type: DataTypes.STRING,
-      }
-    },{
-    // Ne pas ajouter les attibuts timestamps (updatedAt, createdAt)
-    timestamps: false,
-    // Pas de createdAt
-    createdAt: false,
-    // Pas de updatedAt
-    updatedAt: false,
-  });
-  
-    return Category;
-  };
+      },
+    },
+    {
+      // Ne pas ajouter les attibuts timestamps (updatedAt, createdAt)
+      timestamps: false,
+      // Pas de createdAt
+      createdAt: false,
+      // Pas de updatedAt
+      updatedAt: false,
+    },
+  )
+
+  return Category
+}

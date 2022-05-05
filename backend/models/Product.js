@@ -1,7 +1,7 @@
-
 module.exports = (sequelize, DataTypes) => {
-
-    const Product = sequelize.define("product", {
+  const Product = sequelize.define(
+    'product',
+    {
       productId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -15,15 +15,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       price: {
         type: DataTypes.FLOAT,
-      }
-      },{
+      },
+    },
+    {
       // Ne pas ajouter les attibuts timestamps (updatedAt, createdAt)
       timestamps: false,
       // Pas de createdAt
       createdAt: false,
       // Pas de updatedAt
       updatedAt: false,
-    });
-  
-    return Product;
-};
+    },
+  )
+
+  return Product
+}

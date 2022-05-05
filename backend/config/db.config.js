@@ -1,5 +1,5 @@
-const dotenv = require("dotenv");
-dotenv.config();
+const dotenv = require('dotenv')
+dotenv.config()
 
 module.exports = {
   HOST: process.env.DB_HOST,
@@ -7,11 +7,11 @@ module.exports = {
   PASSWORD: process.env.DB_USER_PASSWORD,
   DB: process.env.DB_NAME,
   LOG: process.env.SQL_LOGGING,
-  dialect: "mysql",
+  dialect: 'mysql',
   pool: {
     max: 5,
     min: 0,
     acquire: 30000,
     idle: 10000,
   },
-};
+}

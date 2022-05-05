@@ -1,0 +1,25 @@
+{
+  "name": "acme-plus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently  \"npm run dev-back\" \"npm run dev-front\"",
+    "install": "cd backend && npm i && cd ../frontend && npm i",
+    "dev-front": "cd frontend && npm start",
+    "dev-back": "cd backend && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StephaneRavet/acme-plus.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StephaneRavet/acme-plus/issues"
+  },
+  "homepage": "https://github.com/StephaneRavet/acme-plus#readme",
+  "devDependencies": {
+    "concurrently": "^7.1.0"
+  }
+}

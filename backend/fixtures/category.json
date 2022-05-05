@@ -1,23 +1,23 @@
 [
-    {
-        "model": "category",
-        "data": {
-            "categoryId": 1,
-            "name": "Alpinisme"
-        }
-    },
-    {
-        "model": "category",
-        "data": {
-            "categoryId": 2,
-            "name": "Randonnée"
-        }
-    },
-    {
-        "model": "category",
-        "data": {
-            "categoryId": 3,
-            "name": "Escalade"
-        }
+  {
+    "model": "category",
+    "data": {
+      "categoryId": 1,
+      "name": "Alpinisme"
     }
+  },
+  {
+    "model": "category",
+    "data": {
+      "categoryId": 2,
+      "name": "Randonnée"
+    }
+  },
+  {
+    "model": "category",
+    "data": {
+      "categoryId": 3,
+      "name": "Escalade"
+    }
+  }
 ]

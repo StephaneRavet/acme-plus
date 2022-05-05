@@ -1,8 +1,9 @@
-const Order = require("./Order");
+const Order = require('./Order')
 
 module.exports = (sequelize, DataTypes) => {
-  
-    const User = sequelize.define("user", {
+  const User = sequelize.define(
+    'user',
+    {
       userId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -10,19 +11,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       surname: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       firstname: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       pwd: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       pwdDatetime: {
         type: DataTypes.DATE,
@@ -30,21 +31,23 @@ module.exports = (sequelize, DataTypes) => {
       level: {
         type: DataTypes.TINYINT,
         allowNull: false,
-        comment:  '1 = dealer, 2 = administrator'
+        comment: '1 = dealer, 2 = administrator',
       },
       CMR: {
         type: DataTypes.TINYINT,
-      }
-    },{
-    // Ne pas ajouter les attibuts timestamps (updatedAt, createdAt)
-    timestamps: false,
-    // Pas de createdAt
-    createdAt: false,
-    // Pas de updatedAt
-    updatedAt: false,
-  });
-  
-//    User.hasMany(Order, {foreignKey: 'userId'});
+      },
+    },
+    {
+      // Ne pas ajouter les attibuts timestamps (updatedAt, createdAt)
+      timestamps: false,
+      // Pas de createdAt
+      createdAt: false,
+      // Pas de updatedAt
+      updatedAt: false,
+    },
+  )
 
-    return User;
-  };
+  //    User.hasMany(Order, {foreignKey: 'userId'});
+
+  return User
+}
