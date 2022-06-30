@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "Backend projet ACME",
   "main": "server.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node server.js",
     "trace": "node --trace-deprecation server.js",

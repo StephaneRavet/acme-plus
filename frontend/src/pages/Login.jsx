@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Context } from '../context'
 
-function Connection (props) {
+function Login (props) {
   const [error, setError] = useState(null)
   const { dispatch } = useContext(Context)
   const navigate = useNavigate()
@@ -22,7 +22,6 @@ function Connection (props) {
           password: Yup.string()
             .required('Un mot de passe est nécessaire')
             .min(6, 'Votre mot de passe doit comporter au minimum 6 caractères')
-            .max(10, 'Votre mot de passe doit comporter au maximum 10 caractères'),
         })}
         onSubmit={async (values) => {
           try {
@@ -55,4 +54,4 @@ function Connection (props) {
   )
 }
 
-export default Connection
+export default Login

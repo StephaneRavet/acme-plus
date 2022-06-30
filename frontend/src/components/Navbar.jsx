@@ -1,26 +1,28 @@
 import React, { useCallback, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Context } from '../context'
 import axios from 'axios'
 
-function Navbar (props) {
+function Navbar(props) {
   const { context, dispatch } = useContext(Context)
+  const navigate = useNavigate()
   const logout = useCallback(async () => {
     try {
       await axios.get('/user/logout')
       axios.defaults.headers.common['Authorization'] = null
       dispatch({ type: 'logout' })
+      navigate('/login')
     } catch (error) {
       console.error(error)
     }
-  }, [dispatch])
+  }, [dispatch, navigate])
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">ACME Plus</Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">

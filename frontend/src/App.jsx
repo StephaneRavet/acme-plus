@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 
-import Connection from './pages/Connection'
+import Login from './pages/Login'
 import ProductCollection from './pages/ProductCollection'
 
 function App () {
@@ -13,7 +13,7 @@ function App () {
       <div className="container">
         <Routes>
           <Route path="/" element={<ProductCollection/>}/>
-          <Route path="/login" element={<Connection/>}/>
+          <Route path="/login" element={<Login/>}/>
         </Routes>
       </div>
     </div>

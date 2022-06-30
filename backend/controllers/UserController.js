@@ -3,50 +3,50 @@ const bcrypt = require('bcrypt')
 const db = require('../models/index')
 
 class UserController {
-  constructor () {
+  constructor() {
     this.User = db.user
     this.Order = db.order
     this.basket = []
   }
 
-  async tobasket (id) {
+  async tobasket(id) {
     console.log(`== basket ${id}`)
     this.basket.push(id)
   }
 
-  async basket () {
+  async basket() {
     return this.basket
   }
 
-  async checkout () {
+  async checkout() {
     return ['OK']
   }
 
-  async orders () {
+  async orders() {
     return this.Order.findAll({
       where: { userId: userId },
     })
   }
 
-  async order (id) {
+  async order(id) {
     return this.Order.findAll({
       where: { orderId: id },
     })
   }
 
-  async profile (id) {
+  async profile(id) {
     return this.User.findOne({ where: { userId: id } })
   }
 
-  async crud () {
+  async crud() {
     return this.User.findAll({})
   }
 
-  async edit (id) {
+  async edit(id) {
     return this.User.findOne({ where: { userId: id } })
   }
 
-  async delete (id) {
+  async delete(id) {
     await this.User.findOne({
       where: { userId: id },
     })
@@ -65,7 +65,7 @@ class UserController {
     return ['OK']
   }
 
-  async save (req, res) {
+  async save(req, res) {
     const data = req.body.data
     // let { surname, firstname, email, pwd, level, cmr } = data
     let { surname, pwd } = data
@@ -77,7 +77,7 @@ class UserController {
     return ['OK']
   }
 
-  async #userCreate (data, hash) {
+  async #userCreate(data, hash) {
     await this.User.create({
       ...data,
       pwd: hash,
@@ -85,7 +85,7 @@ class UserController {
     })
   }
 
-  async signin (req, res) {
+  async signin(req, res) {
     bcrypt
       .hash(req.body.password, 10)
       .then((hash) => {
@@ -101,7 +101,7 @@ class UserController {
       .catch((error) => res.status(500).json({ error }))
   }
 
-  async login (req) {
+  async login(req) {
     let status, message
     try {
       const user = await this.User.findOne({ where: { email: req.email } })
@@ -114,7 +114,7 @@ class UserController {
           status = 200
           message = {
             userId: user.userId,
-            token: jwt.sign({ id: user.userId }, process.env.TOKEN_KEY, { expiresIn: '3600s' }),
+            token: jwt.sign({ id: user.userId }, process.env.JWT_SECRET_KEY, { expiresIn: '3600s' }),
           }
         } else {
           status = 401
@@ -128,24 +128,19 @@ class UserController {
     return { status: status, retour: message }
   }
 
-  async logout (req) {
-    if (req.session.userId) {
-      delete req.session.userId
-      response.json({ result: 'SUCCESS' })
-    } else {
-      response.json({ result: 'ERROR', message: 'User is not logged in.' })
-    }
+  async logout() {
+    return { result: 'SUCCESS' }
   }
 
-  async password_1 () { }
+  async password_1() { }
 
-  async password_2 (data) {
+  async password_2(data) {
     return this.User.findOne({ where: { email: data.email } })
   }
 
-  async password_3 () { }
+  async password_3() { }
 
-  async password_4 (data) {
+  async password_4(data) {
     let { id, pwd } = data
     let aUser = await this.User.findOne({ where: { userId: id } })
 
