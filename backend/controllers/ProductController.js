@@ -1,26 +1,49 @@
 const fs = require('fs')
+const db = require('../models/index')
 
 class ProductController {
-  constructor(productModel, categoryModel) {
-    this.Product = productModel
-    this.Category = categoryModel
+  constructor () {
+    this.Product = db.product
+    this.Category = db.category
   }
 
-  collection() {
-    return this.Product.findAll({ include: [{ model: this.Category }] })
+  async collection () {
+    let categories = await this.Category.findAll()
+    const products = await this.Product.findAll()
+
+    categories = JSON.parse(JSON.stringify(categories))
+
+    categories.map(function(category) {
+      category.product = products
+        .filter(function(product) {
+          if (product.categoryId === category.categoryId) {
+            return product
+          }
+        })
+        .map(function(d2) {
+          return {
+            productId: d2.productId,
+            name: d2.name,
+            ref: d2.ref,
+            price: d2.price,
+          }
+        })
+    })
+
+    return categories
   }
 
-  detail(productId) {
+  detail (productId) {
     return this.Product.findAll({
       where: { productId: productId },
     })
   }
 
-  list() {
+  list () {
     return this.Product.findAll({ include: [{ model: this.Category }] })
   }
 
-  async save(data) {
+  async save (data) {
     let { id, name, ref, price, categoryId } = data
     let aProduct = await this.Product.findOne({ where: { productId: id } })
 
@@ -35,30 +58,30 @@ class ProductController {
     return ['OK']
   }
 
-  async delete(productId, flag) {
+  async delete (productId, flag) {
     await this.Product.findOne({
       where: { productId: productId },
     })
       .then((aProduct) => {
-        if (aProduct.productId == productId) {
+        if (aProduct.productId === productId) {
           // Le produit existe
           switch (flag) {
             case 'all':
-              this.#deleteProductById(productId, aProduct.name)
+              return this.deleteProductById(productId, aProduct.name)
             case 'img':
-              this.#deleteProductImage(productId)
+              return this.deleteProductImage(productId)
           }
         }
       })
-      .catch((err) => {
+      .catch(() => {
         console.log(`** Produit ${productId} non trouvé`)
       })
 
     return ['OK']
   }
 
-  #deleteProductImage(id) {
-    var image = `./images/products/prod_${id}.jpg`
+  deleteProductImage (id) {
+    const image = `./images/products/prod_${id}.jpg`
 
     try {
       fs.unlinkSync(image)
@@ -68,7 +91,7 @@ class ProductController {
     }
   }
 
-  #deleteProductById(id, name) {
+  deleteProductById (id, name) {
     this.Product.destroy({ where: { productId: id } })
       .then(() => {
         console.log(`-- Produit [${name}] effacé`)
@@ -78,7 +101,7 @@ class ProductController {
       })
   }
 
-  edit(productId) {
+  edit (productId) {
     return this.Product.findOne({
       where: { productId: productId },
     })

@@ -5,32 +5,30 @@ const bcrypt = require('bcrypt')
 
 // Base de données
 const db = require('./models')
-db.sequelize
-  .sync({ force: true })
-  .then(() => {
-    console.log('== La base de données est prête')
+db.sequelize.sync({ force: true }).then(() => {
+  console.log('== La base de données est prête')
 
-    // Import des données de test
-    sequelize_fixtures.loadFile('fixtures/user.json', db, {
-      transformFixtureDataFn: function (data) {
-        data.pwd = bcrypt.hashSync(data.pwd, 10)
-        return data;
-      }
-    })
-    sequelize_fixtures
-      .loadFiles(
-        [
-          'fixtures/category.json',
-          'fixtures/product.json',
-          'fixtures/order.json',
-          'fixtures/orderitem.json',
-        ],
-        db,
-      )
-      .then(function () {
-        console.log('== Données de tests importées')
-      })
+  // Import des données de test
+  sequelize_fixtures.loadFile('fixtures/user.json', db, {
+    transformFixtureDataFn: function (data) {
+      data.pwd = bcrypt.hashSync(data.pwd, 10)
+      return data
+    },
   })
+  sequelize_fixtures
+    .loadFiles(
+      [
+        'fixtures/category.json',
+        'fixtures/product.json',
+        'fixtures/order.json',
+        'fixtures/orderitem.json',
+      ],
+      db,
+    )
+    .then(function () {
+      console.log('== Données de tests importées')
+    })
+})
 
 // le module de routage
 const router = require('./routes')
@@ -42,9 +40,9 @@ const ProductController = require('./controllers/ProductController')
 const UserController = require('./controllers/UserController')
 
 const appController = new AppController()
-const categoryController = new CategoryController(db.category)
-const productController = new ProductController(db.product, db.category)
-const userController = new UserController(db.user, db.order)
+const categoryController = new CategoryController()
+const productController = new ProductController()
+const userController = new UserController()
 
 // Création de l'application Node.js
 const app = express()
@@ -58,7 +56,7 @@ app.use(
 )
 app.use(express.json())
 
-//sécurité cors abaissée
+//sécurité cors abaissée//
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader(

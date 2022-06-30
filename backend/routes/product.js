@@ -3,7 +3,7 @@ const router = express.Router()
 const authentification = require('../middleware/auth')
 
 module.exports = (params) => {
-  const { db, productController } = params
+  const { productController } = params
 
   router.get('/collection', authentification, async (req, res) => {
     const data = await productController.collection()
@@ -21,12 +21,7 @@ module.exports = (params) => {
   })
 
   router.get('/edit/:productId?', authentification, async (req, res) => {
-    if (typeof req.params.productId !== 'undefined') {
-      var id = req.params.productId
-    } else {
-      var id = null
-    }
-
+    const id = req.params.productId ?? null
     const data = await productController.edit(id)
     res.json(data)
   })

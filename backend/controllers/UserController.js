@@ -1,52 +1,52 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const db = require('../models/index')
 
 class UserController {
-  constructor(userModel, orderModel) {
-    this.User = userModel
-    this.Order = orderModel
+  constructor () {
+    this.User = db.user
+    this.Order = db.order
     this.basket = []
   }
 
-  async tobasket(id) {
+  async tobasket (id) {
     console.log(`== basket ${id}`)
     this.basket.push(id)
   }
 
-  async basket() {
-    this.basket = []
+  async basket () {
     return this.basket
   }
 
-  async checkout() {
+  async checkout () {
     return ['OK']
   }
 
-  async orders() {
+  async orders () {
     return this.Order.findAll({
       where: { userId: userId },
     })
   }
 
-  async order(id) {
+  async order (id) {
     return this.Order.findAll({
       where: { orderId: id },
     })
   }
 
-  async profile(id) {
+  async profile (id) {
     return this.User.findOne({ where: { userId: id } })
   }
 
-  async crud() {
+  async crud () {
     return this.User.findAll({})
   }
 
-  async edit(id) {
+  async edit (id) {
     return this.User.findOne({ where: { userId: id } })
   }
 
-  async delete(id) {
+  async delete (id) {
     await this.User.findOne({
       where: { userId: id },
     })
@@ -59,35 +59,33 @@ class UserController {
             console.log(`** User [${aUser.firstname} ${aUser.lastname}] non effacé`, err.message)
           })
       })
-      .catch((err) => {
+      .catch(() => {
         console.log(`** User ${id} non trouvé`)
       })
     return ['OK']
   }
 
-  async save(data) {
-    let { surname, firstname, email, pwd, level, cmr } = data
+  async save (req, res) {
+    const data = req.body.data
+    // let { surname, firstname, email, pwd, level, cmr } = data
+    let { surname, pwd } = data
     console.log(`== userController save name: ${surname} ref: ${ref}`)
     bcrypt
       .hash(pwd, 10)
-      .then(this.#userCreate(hash))
+      .then(hash => this.#userCreate(data, hash))
       .catch((error) => res.status(500).json({ error }))
     return ['OK']
   }
 
-  async #userCreate(hash) {
+  async #userCreate (data, hash) {
     await this.User.create({
-      surname: surname,
-      firstName: firstname,
-      email: email,
+      ...data,
       pwd: hash,
       pwdDatetime: Date.now(),
-      level: level,
-      CMR: cmr,
     })
   }
 
-  async signin() {
+  async signin (req, res) {
     bcrypt
       .hash(req.body.password, 10)
       .then((hash) => {
@@ -103,51 +101,51 @@ class UserController {
       .catch((error) => res.status(500).json({ error }))
   }
 
-  async login(req, res) {
-    const { email, password } = req.body
-    if (!email || !password) {
-      return res.status(401).json({ error: "Données requises : email, password." })
-    }
-    this.User.findOne({ where: { email: email } })
-      .then((user) => {
-        if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !' })
+  async login (req) {
+    let status, message
+    try {
+      const user = await this.User.findOne({ where: { email: req.email } })
+      if (!user) {
+        status = 401
+        message = { erreur: 'Utilisateur non trouvé !' }
+      } else {
+        const valid = await bcrypt.compare(req.password, user.pwd)
+        if (valid === true) {
+          status = 200
+          message = {
+            userId: user.userId,
+            token: jwt.sign({ id: user.userId }, process.env.TOKEN_KEY, { expiresIn: '3600s' }),
+          }
+        } else {
+          status = 401
+          message = { erreur: 'Mot de passe incorrect !' }
         }
-        bcrypt
-          .compare(password, user.dataValues.pwd)
-          .then((valid) => {
-            if (!valid) {
-              return res.status(401).json({ error: 'Mot de passe incorrect !' })
-            } else {
-              res.json({
-                userId: user.userId,
-                token: jwt.sign(
-                  { userId: user._id },
-                  'RANDOM_TOKEN_SECRET',
-                  { expiresIn: '3600s' }
-                )
-              });
-            }
-          })
-      })
+      }
+    } catch (error) {
+      status = 500
+      message = 'Erreur détectée: ' + error
+    }
+    return { status: status, retour: message }
   }
 
-  async logout(userId) {
-    if (userId) {
-      delete request.session.userId
-      return { result: 'SUCCESS' }
+  async logout (req) {
+    if (req.session.userId) {
+      delete req.session.userId
+      response.json({ result: 'SUCCESS' })
     } else {
-      throw new Error({ status: 401, message: 'User is not logged in.' })
+      response.json({ result: 'ERROR', message: 'User is not logged in.' })
     }
   }
 
-  async password_1() { }
-  async password_2(data) {
-    let { email } = data
-    let aUser = await this.User.findOne({ where: { email: email } })
+  async password_1 () { }
+
+  async password_2 (data) {
+    return this.User.findOne({ where: { email: data.email } })
   }
-  async password_3() { }
-  async password_4(data) {
+
+  async password_3 () { }
+
+  async password_4 (data) {
     let { id, pwd } = data
     let aUser = await this.User.findOne({ where: { userId: id } })
 

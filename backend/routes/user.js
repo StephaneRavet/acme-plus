@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const authentification = require('../middleware/auth')
 
 module.exports = (params) => {
-  const { db, userController } = params
+  const { userController } = params
 
   router.post('/tobasket', async (req, res) => {
-    console.log(req)
     const data = await userController.tobasket(req.body)
     res.json(data)
   })
@@ -30,8 +30,8 @@ module.exports = (params) => {
     res.json(data)
   })
 
-  router.get('/profile', async (req, res) => {
-    const data = await userController.profile()
+  router.get('/profile', authentification, async (req, res) => {
+    const data = await userController.profile(req.userId)
     res.json(data)
   })
 
@@ -65,12 +65,13 @@ module.exports = (params) => {
     res.json(data)
   })
 
-  router.post('/login', async (req, res, next) => {
-    await userController.login(req, res)
+  router.post('/login', async (req, res) => {
+    const data = await userController.login(req.body)
+    res.status(data.status).json(data.retour)
   })
 
   router.get('/logout', async (req, res) => {
-    const data = await userController.logout(request.session.userId)
+    const data = await userController.logout(req)
     res.json(data)
   })
 
@@ -85,11 +86,13 @@ module.exports = (params) => {
   })
 
   router.get('/password_3', async (req, res) => {
-    await userController.password_3(req, res)
+    const data = await userController.password_3()
+    res.json(data)
   })
 
   router.post('/password_4', async (req, res) => {
-    await userController.password_4(req, res)
+    const data = await userController.password_4(req.body)
+    res.json(data)
   })
 
   return router

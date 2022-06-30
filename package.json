@@ -7,7 +7,8 @@
     "dev": "concurrently  \"npm run dev-back\" \"npm run dev-front\"",
     "install": "cd backend && npm i && cd ../frontend && npm i",
     "dev-front": "cd frontend && npm start",
-    "dev-back": "cd backend && npm run dev"
+    "dev-back": "cd backend && npm run dev",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ../.prettierrc"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,10 @@
   },
   "homepage": "https://github.com/StephaneRavet/acme-plus#readme",
   "devDependencies": {
-    "concurrently": "^7.1.0"
+    "concurrently": "^7.1.0",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "prettier": "^2.6.2"
   }
 }

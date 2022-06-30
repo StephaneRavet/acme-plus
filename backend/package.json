@@ -1,17 +1,18 @@
 {
   "name": "acme-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backend projet ACME",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "trace": "node --trace-deprecation server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [
     "nodejs",
     "api"
   ],
+  "author": "Marc Augier - Visiplus",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -28,11 +29,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.0",
-    "eslint": "^8.14.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.16",
-    "prettier": "^2.6.2",
     "sequelize-cli": "^6.4.1"
   }
 }
