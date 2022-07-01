@@ -1,19 +1,22 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import './App.css'
 
 import Login from './pages/Login'
 import ProductCollection from './pages/ProductCollection'
+import ProductDetail from './pages/ProductDetail'
 
-function App () {
+function App() {
   return (
-    <div className="App">
+    <div className="">
       <div className="mb-5">
-        <Navbar/>
+        <Navbar />
       </div>
       <div className="container">
         <Routes>
-          <Route path="/" element={<ProductCollection/>}/>
-          <Route path="/login" element={<Login/>}/>
+          <Route path="/" element={<ProductCollection />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </div>
     </div>

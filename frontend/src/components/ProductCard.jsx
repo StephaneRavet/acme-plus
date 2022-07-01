@@ -1,20 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
-function ProductCard ({ product }) {
+function ProductCard({ product }) {
   return (
-    <div className="card">
-      <img src={`../assets/img/products/product_${product.productId}.jpg`} className="card-img-top" alt=""/>
+    <NavLink to={`/product/${product.productId}`} className="card">
+      <img src={`../assets/img/products/product_${product.productId}.jpg`} className="card-img-top" alt="" />
       <div className="card-body">
         <h5 className="card-title">{product.name}</h5>
         <p className="card-text">
-          Référence : {product.ref}<br/>
+          Référence : {product.ref}<br />
           Prix : {product.price}
         </p>
         {/*<Link href="#" className="btn btn-primary">Go somewhere</Link>*/}
       </div>
-    </div>
+    </NavLink>
   )
 }
 

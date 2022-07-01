@@ -12,22 +12,16 @@ function ProductCollection() {
     }
     axios.get('/product/collection').then(res => setProductsByCategories(res.data))
   }, [navigate])
-  return (
-    <div>
-      {productsByCategories.map((cat) =>
-        <div key={'cat' + cat.categoryId}>
-          <h2>{cat.name}</h2>
-          <div className="container mt-3">
-            <div className="row">
-            {cat.products.map(product =>
-                <div className="col-4 mb-3" key={'product' + product.productId}>
-                  <ProductCard product={product} />
-                </div>)}
-            </div>
-          </div>
-        </div>,
-      )}
-    </div>
+  return productsByCategories.map((cat) =>
+    <div key={'cat' + cat.categoryId}>
+      <h2>{cat.name}</h2>
+      <div className="row">
+        {cat.products.map(product =>
+          <div className="col-4 mb-3" key={'product' + product.productId}>
+            <ProductCard product={product} />
+          </div>)}
+      </div>
+    </div>,
   )
 }
 

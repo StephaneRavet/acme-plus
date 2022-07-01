@@ -34,7 +34,7 @@ class ProductController {
   }
 
   detail (productId) {
-    return this.Product.findAll({
+    return this.Product.findOne({
       where: { productId: productId },
     })
   }
