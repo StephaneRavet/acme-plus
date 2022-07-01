@@ -14,7 +14,7 @@ class ProductController {
     categories = JSON.parse(JSON.stringify(categories))
 
     categories.map(function(category) {
-      category.product = products
+      category.products = products
         .filter(function(product) {
           if (product.categoryId === category.categoryId) {
             return product

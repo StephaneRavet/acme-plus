@@ -14,14 +14,13 @@ function ProductCollection() {
   }, [navigate])
   return (
     <div>
-      <h1>Produits par catégories</h1>
       {productsByCategories.map((cat) =>
         <div key={'cat' + cat.categoryId}>
           <h2>{cat.name}</h2>
           <div className="container mt-3">
             <div className="row">
-              {cat.products.map(product =>
-                <div className="col-3 mb-3" key={'product' + product.productId}>
+            {cat.products.map(product =>
+                <div className="col-4 mb-3" key={'product' + product.productId}>
                   <ProductCard product={product} />
                 </div>)}
             </div>

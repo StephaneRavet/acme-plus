@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 function ProductCard ({ product }) {
   return (
     <div className="card">
-      <img src={`/assets/img/products/product_${product.productId}.jpg`} className="card-img-top" alt=""/>
+      <img src={`../assets/img/products/product_${product.productId}.jpg`} className="card-img-top" alt=""/>
       <div className="card-body">
         <h5 className="card-title">{product.name}</h5>
         <p className="card-text">

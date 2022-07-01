@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "trace": "node --trace-deprecation server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js --signal SIGTERM"
   },
   "keywords": [
     "nodejs",
