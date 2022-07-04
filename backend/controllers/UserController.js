@@ -2,6 +2,10 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const db = require('../models/index')
 
+function lineCalculate(productLine) {
+  return parseInt(productLine.quantity) * parseFloat(productLine.price)
+}
+
 class UserController {
   constructor() {
     this.User = db.user
@@ -9,13 +13,28 @@ class UserController {
     this.basket = []
   }
 
-  async tobasket(id) {
-    console.log(`== basket ${id}`)
-    this.basket.push(id)
+  async tobasket(product) {
+    if (product) {
+      const alreadyExist = this.basket.find(p => product.productId === p.productId)
+      if (alreadyExist) {
+        const index = this.basket.findIndex(p => p.productId === product.productId);
+        this.basket[index].quantity++
+        this.basket[index].total = lineCalculate(this.basket[index])
+      } else {
+        this.basket.push({
+          ...product,
+          quantity: 1,
+          total: product.price
+        })
+      }
+    }
   }
 
-  async basket() {
-    return this.basket
+  async getBasket() {
+    return {
+      products: this.basket,
+      total: this.basket.reduce((acc, p) => acc + p.total, 0)
+    }
   }
 
   async checkout() {

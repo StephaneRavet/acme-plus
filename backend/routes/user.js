@@ -6,12 +6,12 @@ module.exports = (params) => {
   const { userController } = params
 
   router.post('/tobasket', async (req, res) => {
-    const data = await userController.tobasket(req.body)
+    const data = await userController.tobasket(req.body.product)
     res.json(data)
   })
 
-  router.get('/basket', async (req, res) => {
-    const data = await userController.basket()
+  router.get('/basket', authentification, async (req, res) => {
+    const data = await userController.getBasket()
     res.json(data)
   })
 

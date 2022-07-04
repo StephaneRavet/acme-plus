@@ -1,23 +1,27 @@
 import axios from 'axios';
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { useParams, NavLink, useNavigate } from 'react-router-dom';
 
 const ProductDetail = () => {
   const { id } = useParams()
   const [product, setProduct] = useState({})
+  const navigate = useNavigate()
   useEffect(() => {
     axios.get(`/product/detail/${id}`).then(res => setProduct(res.data), [])
   }, [id])
+  const add = useCallback(() => {
+    axios.post('/user/tobasket', { product })
+    navigate('/cart')
+  }, [product, navigate])
   return <div>
     {
       !product.name ?
         <div className='text-center'>Aucun produit</div> :
         <div>
-          <h2 class="display-6">
+          <h5 className="">
             <NavLink to="/">Produits</NavLink> &gt; {product.category.name}
-          </h2>
+          </h5>
           <div className="row" id="detailProduct">
             <div className="col-5 col-xs-6 col-sm-7 col-md-8 d-flex align-items-center">
               <img src={`/assets/img/products/product_${product.productId}.jpg`} alt={product.name} className="img-fluid" />
@@ -61,7 +65,7 @@ const ProductDetail = () => {
                 </select>
               </div>
               <div className="d-grid">
-                <button className="btn btn-primary">Ajouter au panier</button>
+                <button className="btn btn-primary" onClick={add}>Ajouter au panier</button>
               </div>
             </div>
           </div>

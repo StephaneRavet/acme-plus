@@ -5,6 +5,7 @@ import './App.css'
 import Login from './pages/Login'
 import ProductCollection from './pages/ProductCollection'
 import ProductDetail from './pages/ProductDetail'
+import Cart from './pages/Cart'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<ProductCollection />} />
           <Route path="/login" element={<Login />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>
     </div>
