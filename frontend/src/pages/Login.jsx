@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Context } from '../context'
 
-function Login (props) {
+function Login(props) {
   const [error, setError] = useState(null)
   const { dispatch } = useContext(Context)
   const navigate = useNavigate()
@@ -29,6 +29,7 @@ function Login (props) {
             const { email, password } = values
             const res = await axios.post('/user/login', { email, password })
             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
+            window.localStorage.setItem('token', res.data.token)
             dispatch({ type: 'login', payload: email })
             navigate('/')
           } catch (error) {
@@ -39,13 +40,13 @@ function Login (props) {
         <Form>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email</label>
-            <Field name="email" id="email" className="form-control"/>
-            <ErrorMessage name="email" component="div" className="alert alert-warning"/>
+            <Field name="email" id="email" className="form-control" />
+            <ErrorMessage name="email" component="div" className="alert alert-warning" />
           </div>
           <div className="mb-3">
             <label htmlFor="password" className="form-label">Mot de passe</label>
-            <Field type="password" id="password" name="password" className="form-control"/>
-            <ErrorMessage name="password" component="div" className="alert alert-warning"/>
+            <Field type="password" id="password" name="password" className="form-control" />
+            <ErrorMessage name="password" component="div" className="alert alert-warning" />
           </div>
           <button type="submit" className="btn btn-primary">Connexion</button>
         </Form>

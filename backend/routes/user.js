@@ -5,7 +5,7 @@ const authentification = require('../middleware/auth')
 module.exports = (params) => {
   const { userController } = params
 
-  router.post('/tobasket', async (req, res) => {
+  router.post('/tobasket', authentification, async (req, res) => {
     const data = await userController.tobasket(req.body.product)
     res.json(data)
   })
@@ -15,17 +15,22 @@ module.exports = (params) => {
     res.json(data)
   })
 
-  router.get('/checkout', async (req, res) => {
+  router.patch('/basket', authentification, async (req, res) => {
+    const data = await userController.updateBasket(req.body.product)
+    res.json(data)
+  })
+
+  router.get('/checkout', authentification, async (req, res) => {
     const data = await userController.checkout()
     res.json(data)
   })
 
-  router.get('/orders', async (req, res) => {
+  router.get('/orders', authentification, async (req, res) => {
     const data = await userController.orders()
     res.json(data)
   })
 
-  router.get('/order/:orderId', async (req, res) => {
+  router.get('/order/:orderId', authentification, async (req, res) => {
     const data = await userController.order(req.params.orderId)
     res.json(data)
   })
@@ -35,27 +40,27 @@ module.exports = (params) => {
     res.json(data)
   })
 
-  router.get('/crud', async (req, res) => {
+  router.get('/crud', authentification, async (req, res) => {
     const data = await userController.crud()
     res.json(data)
   })
 
-  router.get('/edit', async (req, res) => {
+  router.get('/edit', authentification, async (req, res) => {
     const data = await userController.edit()
     res.json(data)
   })
 
-  router.get('/edit/:userId', async (req, res) => {
+  router.get('/edit/:userId', authentification, async (req, res) => {
     const data = await userController.edit(req.params.userId)
     res.json(data)
   })
 
-  router.get('/delete/:userId', async (req, res) => {
+  router.get('/delete/:userId', authentification, async (req, res) => {
     const data = await userController.delete(req.params.userId)
     res.json(data)
   })
 
-  router.post('/save', async (req, res) => {
+  router.post('/save', authentification, async (req, res) => {
     const data = await userController.save()
     res.json(data)
   })
@@ -70,7 +75,7 @@ module.exports = (params) => {
     res.status(data.status).json(data.retour)
   })
 
-  router.get('/logout', async (req, res) => {
+  router.get('/logout', authentification, async (req, res) => {
     const data = await userController.logout()
     res.json(data)
   })

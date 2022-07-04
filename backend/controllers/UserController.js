@@ -37,6 +37,22 @@ class UserController {
     }
   }
 
+  async updateBasket(product) {
+    if (product) {
+      const alreadyExist = this.basket.find(p => product.productId == p.productId)
+      if (alreadyExist) {
+        const index = this.basket.findIndex(p => p.productId == product.productId);
+        if (product.quantity == '0') {
+          this.basket.splice(index, 1)
+        } else {
+          this.basket[index].quantity = product.quantity
+          this.basket[index].total = lineCalculate(this.basket[index])
+        }
+      }
+    }
+  }
+
+
   async checkout() {
     return ['OK']
   }

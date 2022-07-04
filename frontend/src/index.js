@@ -9,6 +9,9 @@ import { ContextProvider } from './context'
 // configure axios
 import axios from 'axios'
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL
+if (window.localStorage.getItem('token')) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + window.localStorage.getItem('token')
+}
 // auto redirect to /login if backend response is 401
 axios.interceptors.response.use(response => response, error => {
   if (error.response.status === 401) {
