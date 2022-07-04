@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useCallback } from 'react';
 
 function Cart() {
+  const navigate = useNavigate();
   const [cart, setCart] = useState({});
 
   const getCart = useCallback(async () => {
@@ -18,6 +19,12 @@ function Cart() {
     await axios.patch('/user/basket', { product: { productId, quantity } })
     await getCart()
   }, [getCart])
+
+  const checkout = useCallback(async () => {
+    await axios.get('/user/checkout')
+    navigate('/')
+  }, [])
+
   return (
     <div>
 
@@ -65,6 +72,12 @@ function Cart() {
           </tr>
         </tfoot>
       </table>
+      <div className='d-flex justify-content-between'>
+        <NavLink to='/'>
+          <button className='btn btn-primary'>Ajouter d'autres articles</button>
+        </NavLink>
+        <button className='btn btn-primary' onClick={checkout}>Valider mon panier</button>
+      </div>
     </div >
   );
 }
