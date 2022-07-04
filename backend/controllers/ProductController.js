@@ -2,25 +2,25 @@ const fs = require('fs')
 const db = require('../models/index')
 
 class ProductController {
-  constructor () {
+  constructor() {
     this.Product = db.product
     this.Category = db.category
   }
 
-  async collection () {
+  async collection() {
     let categories = await this.Category.findAll()
     const products = await this.Product.findAll()
 
     categories = JSON.parse(JSON.stringify(categories))
 
-    categories.map(function(category) {
+    categories.map(function (category) {
       category.products = products
-        .filter(function(product) {
+        .filter(function (product) {
           if (product.categoryId === category.categoryId) {
             return product
           }
         })
-        .map(function(d2) {
+        .map(function (d2) {
           return {
             productId: d2.productId,
             name: d2.name,
@@ -33,17 +33,18 @@ class ProductController {
     return categories
   }
 
-  detail (productId) {
+  detail(productId) {
     return this.Product.findOne({
       where: { productId: productId },
+      include: [{ model: this.Category }]
     })
   }
 
-  list () {
+  list() {
     return this.Product.findAll({ include: [{ model: this.Category }] })
   }
 
-  async save (data) {
+  async save(data) {
     let { id, name, ref, price, categoryId } = data
     let aProduct = await this.Product.findOne({ where: { productId: id } })
 
@@ -58,7 +59,7 @@ class ProductController {
     return ['OK']
   }
 
-  async delete (productId, flag) {
+  async delete(productId, flag) {
     await this.Product.findOne({
       where: { productId: productId },
     })
@@ -80,7 +81,7 @@ class ProductController {
     return ['OK']
   }
 
-  deleteProductImage (id) {
+  deleteProductImage(id) {
     const image = `./images/products/prod_${id}.jpg`
 
     try {
@@ -91,7 +92,7 @@ class ProductController {
     }
   }
 
-  deleteProductById (id, name) {
+  deleteProductById(id, name) {
     this.Product.destroy({ where: { productId: id } })
       .then(() => {
         console.log(`-- Produit [${name}] effacé`)
@@ -101,7 +102,7 @@ class ProductController {
       })
   }
 
-  edit (productId) {
+  edit(productId) {
     return this.Product.findOne({
       where: { productId: productId },
     })
