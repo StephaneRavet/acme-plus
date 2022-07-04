@@ -4,13 +4,11 @@ import { NavLink } from 'react-router-dom'
 import { useCallback } from 'react';
 
 function Cart() {
-  const [products, setProducts] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [cart, setCart] = useState({});
 
   const getCart = useCallback(async () => {
     return axios.get(`/user/basket`).then(res => {
-      setProducts(res.data.products)
-      setTotal(res.data.total)
+      setCart(res.data)
     })
   }, [])
 
@@ -36,7 +34,7 @@ function Cart() {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => {
+          {cart.products?.map((product) => {
             return <tr key={product.id}>
               <td>{product.name}</td>
               <td className="text-center">{product.price} €</td>
@@ -54,9 +52,16 @@ function Cart() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan="4" className='text-end'>
-              <strong>{total.toFixed(2)} €</strong>
-            </td>
+            <th colSpan="3" className='text-end'>Total prix de vente conseillé</th>
+            <th className='text-end'>{cart.price?.toFixed(2)} €</th>
+          </tr>
+          <tr>
+            <th colSpan="3" className='text-end'>TMC 40%</th>
+            <th className='text-end'>{cart.tmc?.toFixed(2)} €</th>
+          </tr>
+          <tr>
+            <th colSpan="3" className='text-end'>TOTAL</th>
+            <th className='text-end'>{cart.total?.toFixed(2)} €</th>
           </tr>
         </tfoot>
       </table>

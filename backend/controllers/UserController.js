@@ -31,10 +31,10 @@ class UserController {
   }
 
   async getBasket() {
-    return {
-      products: this.basket,
-      total: this.basket.reduce((acc, p) => acc + p.total, 0)
-    }
+    const price = this.basket.reduce((acc, p) => acc + p.total, 0)
+    const tmc = price * 0.4
+    const total = price + tmc
+    return { products: this.basket, price, tmc, total, }
   }
 
   async updateBasket(product) {
