@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Context } from '../context'
 
-function Login(props) {
+function Login() {
   const [error, setError] = useState(null)
   const { dispatch } = useContext(Context)
   const navigate = useNavigate()
@@ -30,6 +30,7 @@ function Login(props) {
             const res = await axios.post('/user/login', { email, password })
             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
             window.localStorage.setItem('token', res.data.token)
+            window.localStorage.setItem('user', email)
             dispatch({ type: 'login', payload: email })
             navigate('/')
           } catch (error) {

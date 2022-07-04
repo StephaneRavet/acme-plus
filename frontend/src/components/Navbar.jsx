@@ -10,6 +10,8 @@ function Navbar(props) {
     try {
       await axios.get('/user/logout')
       axios.defaults.headers.common['Authorization'] = null
+      window.localStorage.removeItem('user')
+      window.localStorage.removeItem('token')
       dispatch({ type: 'logout' })
       navigate('/login')
     } catch (error) {
