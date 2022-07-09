@@ -8,9 +8,7 @@ function Cart() {
   const [cart, setCart] = useState({});
 
   const getCart = useCallback(async () => {
-    return axios.get(`/user/basket`).then(res => {
-      setCart(res.data)
-    })
+    return axios.get(`/user/basket`).then(res => setCart(res.data))
   }, [])
 
   useEffect(() => { getCart() }, [getCart])
@@ -42,13 +40,13 @@ function Cart() {
         </thead>
         <tbody>
           {cart.products?.map((product) => {
-            return <tr key={product.id}>
+            return <tr key={product.productId}>
               <td>{product.name}</td>
               <td className="text-center">{product.price} €</td>
               <td className="text-center">
                 <select onChange={event => onQuantityChange(product.productId, event.target.value)} defaultValue={product.quantity}>
-                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value, index) =>
-                    <option value={value} key={index}>{value}</option>
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(value =>
+                    <option value={value} key={value}>{value}</option>
                   )}
                 </select>
               </td>
