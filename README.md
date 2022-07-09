@@ -2,7 +2,7 @@
 
 ## Initialisation du projet
 
-Il deux fichiers dotenv (.env) qui permettent de paramètrer le projet pour qu'il fonctionne sur votre machine (ou pour un déploiement) :
+Il y a deux fichiers `.env` (dotenv) qui permettent de paramètrer le projet pour qu'il fonctionne sur votre machine, ou pour un déploiement. Voici les deux fichiers ainsi que les variables de configuration qu'ils contiennent :
 * `/backend/.env`
   * DB_HOST
   * DB_NAME
