@@ -16,7 +16,7 @@ function App() {
     if (window.localStorage.getItem('user')) {
       dispatch({ type: 'login', payload: window.localStorage.getItem('user') })
     }
-  }, [])
+  }, [dispatch])
   return (
     <div className="">
       <div className="mb-5">

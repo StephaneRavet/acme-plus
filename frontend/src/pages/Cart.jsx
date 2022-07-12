@@ -23,7 +23,7 @@ function Cart() {
   const checkout = useCallback(async () => {
     await axios.get('/user/checkout')
     navigate('/')
-  }, [])
+  }, [navigate])
 
   return (
     <div>

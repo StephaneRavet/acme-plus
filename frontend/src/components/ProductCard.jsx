@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function ProductCard({ product }) {
+  const navigate = useNavigate()
   return (
-    <NavLink to={`/product/${product.productId}`} className="card">
+    <div onClick={() => navigate(`/product/${product.productId}`)} className="card" role="button">
       <img src={`../assets/img/products/product_${product.productId}.jpg`} className="card-img-top" alt="" />
       <div className="card-body">
         <h5 className="card-title">{product.name}</h5>
@@ -14,7 +15,7 @@ function ProductCard({ product }) {
         </p>
         {/*<Link href="#" className="btn btn-primary">Go somewhere</Link>*/}
       </div>
-    </NavLink>
+    </div>
   )
 }
 
