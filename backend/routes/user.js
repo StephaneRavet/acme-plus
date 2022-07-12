@@ -21,7 +21,7 @@ module.exports = (params) => {
   })
 
   router.get('/checkout', authentification, async (req, res) => {
-    const data = await userController.checkout()
+    const data = await userController.checkout(req.userId)
     res.json(data)
   })
 

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const db = require('../models/index')
+const { user } = require('../models/index')
 
 function lineCalculate(productLine) {
   return parseInt(productLine.quantity) * parseFloat(productLine.price)
@@ -10,6 +11,7 @@ class UserController {
   constructor() {
     this.User = db.user
     this.Order = db.order
+    this.OrderItem = db.orderitem
     this.basket = []
   }
 
@@ -53,8 +55,17 @@ class UserController {
   }
 
 
-  async checkout() {
-    return ['OK']
+  async checkout(userId) {
+    const basket = this.getBasket()
+    const order = await this.Order.create({ amount: basket.total, userId })
+    this.basket.map(async product => {
+      await this.OrderItem.create({
+        orderId: order.orderId,
+        productId: product.productId,
+        price: product.price,
+        quantity: product.quantity,
+      })
+    })
   }
 
   async orders() {

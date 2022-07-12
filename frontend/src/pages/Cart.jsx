@@ -42,7 +42,7 @@ function Cart() {
         </thead>
         <tbody>
           {cart.products?.map((product) => {
-            return <tr key={product.id}>
+            return <tr key={product.productId}>
               <td>{product.name}</td>
               <td className="text-center">{product.price} €</td>
               <td className="text-center">

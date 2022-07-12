@@ -31,13 +31,9 @@ db.order = require('../models/Order.js')(database, Sequelize.DataTypes)
 db.orderitem = require('./OrderItem.js')(database, Sequelize.DataTypes)
 
 // Ajout des relations
-db.user.hasMany(db.order, { foreignKey: 'userId' })
-//  db.order.belongsTo(db.user);
-db.order.hasMany(db.orderitem, { foreignKey: 'orderId' })
-//  db.orderitem.belongsTo(db.order);
-db.product.hasMany(db.orderitem, { foreignKey: 'productId' })
-//  db.orderitem.belongsTo(db.product);
-//db.product.hasMany(db.category, {as: 'category'});
+db.order.belongsTo(db.user, { foreignKey: 'userId' });
+db.orderitem.belongsTo(db.order, { foreignKey: 'orderId' });
+db.orderitem.belongsTo(db.product, { foreignKey: 'productId' });
 db.product.belongsTo(db.category, { foreignKey: 'categoryId' })
 
 module.exports = db
