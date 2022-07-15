@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -n backend,frontend  'npm run dev-back' 'npm run dev-front' -c 'blue,cyan' ",
+    "dev": "concurrently -n backend,frontend  \"npm run dev-back\" \"npm run dev-front\" -c blue,cyan ",
     "install": "cd backend && npm i && cd ../frontend && npm i",
     "dev-front": "cd frontend && npm start",
     "dev-back": "cd backend && npm run dev",
