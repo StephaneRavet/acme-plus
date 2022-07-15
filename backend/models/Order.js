@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       amount: {
         type: DataTypes.DECIMAL(8, 2),
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        key: true,
+        allowNull: false,
+      },
     },
     {
       // Ne pas ajouter les attibuts timestamps (updatedAt, createdAt)

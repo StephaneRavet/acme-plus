@@ -58,7 +58,7 @@ function Cart() {
         <tfoot>
           <tr>
             <th colSpan="3" className='text-end'>Total prix de vente conseillé</th>
-            <th className='text-end'>{cart.price?.toFixed(2)} €</th>
+            <th className='text-end'>{cart.amount?.toFixed(2)} €</th>
           </tr>
           <tr>
             <th colSpan="3" className='text-end'>TMC 40%</th>

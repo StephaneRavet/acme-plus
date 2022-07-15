@@ -16,6 +16,7 @@ const database = new Sequelize(config.DB, config.USER, config.PASSWORD, {
     acquire: config.pool.acquire,
     idle: config.pool.idle,
   },
+  raw: true
 })
 
 // SQLite plus facile pour les tests
