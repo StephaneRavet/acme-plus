@@ -39,18 +39,18 @@ function Cart() {
           </tr>
         </thead>
         <tbody>
-          {cart.products?.map((product) => {
-            return <tr key={product.productId}>
-              <td>{product.name}</td>
-              <td className="text-center">{product.price} €</td>
+          {cart.products?.map((orderItem) => {
+            return <tr key={orderItem.orderItemId}>
+              <td>{orderItem.product.name}</td>
+              <td className="text-center">{orderItem.price} €</td>
               <td className="text-center">
-                <select onChange={event => onQuantityChange(product.productId, event.target.value)} defaultValue={product.quantity}>
+                <select onChange={event => onQuantityChange(orderItem.productId, event.target.value)} defaultValue={orderItem.quantity}>
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(value =>
                     <option value={value} key={value}>{value}</option>
                   )}
                 </select>
               </td>
-              <td className="text-end">{product.total.toFixed(2)} €</td>
+              <td className="text-end">{orderItem.total} €</td>
             </tr>
           }
           )}

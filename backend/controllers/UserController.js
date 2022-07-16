@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const db = require('../models/index')
-const { user } = require('../models/index')
 
 function lineCalculate(productLine) {
   return parseInt(productLine.quantity) * parseFloat(productLine.price)
@@ -17,37 +16,43 @@ class UserController {
 
   async tobasket(userId, product) {
     // Recherche du produit demandé, dans la BDD
-    product = product?.productId && await this.Product.findOne({ where: { productId: product.productId } })
+    product = product?.productId && (await this.Product.findOne({ where: { productId: product.productId } })).toJSON()
     if (userId && product) {
       // Recherche du panier en cours ou création d'un nouveau
       // un panier est une commande non validée, donc sans orderDatetime
-      const cart = await this.Order.findOne({ where: { userId, orderDatetime: null } }) ?? await this.Order.create({ userId, orderDatetime: null })
+      const orderCart = await this.Order.findOne({ where: { userId, orderDatetime: null } }) ?? await this.Order.create({ userId, orderDatetime: null })
+      const cart = orderCart.toJSON()
       // Recherche s'il y a déjà ce produit dans le panier
-      console.info('cart', cart)
       const cartItem = await this.OrderItem.findOne({ where: { orderId: cart.orderId, productId: product.productId } })
       if (cartItem) {
         await cartItem.update({ quantity: product.quantity })
+        await cartItem.save()
       } else {
-        await this.OrderItem.create({ productId: product.productId, quantity: 1, price: product.price })
+        await this.OrderItem.create({ productId: product.productId, quantity: 1, price: product.price, orderId: cart.orderId })
       }
       // Mise à jour de order.price
-      const cartItems = await this.orderItems.findAll({ where: { orderId: cart.orderId } })
+      const cartItems = await this.OrderItem.findAll({ where: { orderId: cart.orderId } })
       const newPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-      await cart.update({ amount: newPrice })
+      await orderCart.update({ amount: newPrice })
+      await orderCart.save()
     } else {
       throw new Error('Paramètres incorrects')
     }
   }
 
   async getBasket(userId) {
-    const order = await this.Order.findOne({ where: { userId, orderDatetime: null } })
+    const order = await this.Order.findOne({ where: { userId, orderDatetime: null }, raw: true })
     if (order) {
-      const orderItems = await this.OrderItem.findAll({ where: { orderId: order.orderId } }) ?? []
-      const tmc = order.amount * 0.4
+      const tmc = parseFloat((order.amount * 0.4).toFixed(2))
       const total = order.amount + tmc
+      let orderItems = await this.OrderItem.findAll({
+        where: { orderId: order.orderId },
+        include: this.Product,
+      })
+      orderItems = JSON.parse(JSON.stringify(orderItems))
       return {
         ...order,
-        products: orderItems.map(item => item.total = item.price * item.quantity),
+        products: orderItems.map(item => ({ ...item, total: item.price * item.quantity })),
         tmc,
         total
       }
@@ -75,20 +80,18 @@ class UserController {
   async checkout(userId) {
     const basket = this.getBasket()
     const order = await this.Order.create({ amount: basket.total, userId })
-    this.basket.map(async product => {
+    for (const product of this.basket) {
       await this.OrderItem.create({
         orderId: order.orderId,
         productId: product.productId,
         price: product.price,
         quantity: product.quantity,
       })
-    })
+    }
   }
 
   async orders() {
-    return this.Order.findAll({
-      where: { userId: userId },
-    })
+    return this.Order.findAll({ where: { userId: userId } })
   }
 
   async order(id) {

@@ -6,7 +6,7 @@
       "categoryId": 1,
       "name": "Alpina",
       "ref": "210317 729",
-      "price": "1059.90"
+      "price": 1059.90
     }
   },
   {
@@ -16,7 +16,7 @@
       "categoryId": 1,
       "name": "Oural",
       "ref": "210050 609",
-      "price": "240.95"
+      "price": 240.95
     }
   },
   {
@@ -26,7 +26,7 @@
       "categoryId": 1,
       "name": "Etna",
       "ref": "210029 309",
-      "price": "297.41"
+      "price": 297.41
     }
   },
   {
@@ -36,7 +36,7 @@
       "categoryId": 3,
       "name": "Stefi",
       "ref": "310945 426",
-      "price": "132.90"
+      "price": 132.90
     }
   },
   {
@@ -46,7 +46,7 @@
       "categoryId": 3,
       "name": "Pronto",
       "ref": "310551 974",
-      "price": "119.96"
+      "price": 119.96
     }
   },
   {
@@ -56,7 +56,7 @@
       "categoryId": 3,
       "name": "Dorte",
       "ref": "310914 967",
-      "price": "127.46"
+      "price": 127.46
     }
   },
   {
@@ -66,7 +66,7 @@
       "categoryId": 3,
       "name": "Anna",
       "ref": "320960 034",
-      "price": "105.00"
+      "price": 105.00
     }
   },
   {
@@ -76,7 +76,7 @@
       "categoryId": 2,
       "name": "Gunte",
       "ref": "430100 972",
-      "price": "116.96"
+      "price": 116.96
     }
   },
   {
@@ -86,7 +86,7 @@
       "categoryId": 2,
       "name": "Elfie",
       "ref": "430117 990",
-      "price": "125.96"
+      "price": 125.96
     }
   },
   {
@@ -96,7 +96,7 @@
       "categoryId": 2,
       "name": "Carla",
       "ref": "430112 303",
-      "price": "180.00"
+      "price": 180.00
     }
   }
 ]

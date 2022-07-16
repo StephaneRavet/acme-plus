@@ -10,8 +10,8 @@ const ProductDetail = () => {
   useEffect(() => {
     axios.get(`/product/detail/${id}`).then(res => setProduct(res.data), [])
   }, [id])
-  const add = useCallback(() => {
-    axios.post('/user/tobasket', { product })
+  const add = useCallback(async () => {
+    await axios.post('/user/tobasket', { product })
     navigate('/cart')
   }, [product, navigate])
   return <div>

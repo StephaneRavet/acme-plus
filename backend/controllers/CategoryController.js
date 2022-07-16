@@ -39,7 +39,8 @@ class CategoryController {
 
     if (aCategory) {
       console.log(`Modification category ${aCategory.name} en ${name}`)
-      this.Category.update({ name: name }, { where: { categoryId: id } })
+      await this.Category.update({ name: name }, { where: { categoryId: id } })
+      await this.Category.save()
     } else {
       console.log(`Création nouvelle category ${name}`)
       this.Category.create({ name: name })

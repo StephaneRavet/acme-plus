@@ -8,6 +8,7 @@ module.exports = {
   DB: process.env.DB_NAME,
   LOG: process.env.SQL_LOGGING,
   dialect: 'mysql',
+  dialectOptions: { decimalNumbers: true },
   pool: {
     max: 5,
     min: 0,

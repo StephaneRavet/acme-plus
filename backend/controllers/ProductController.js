@@ -8,10 +8,8 @@ class ProductController {
   }
 
   async collection() {
-    let categories = await this.Category.findAll()
-    const products = await this.Product.findAll()
-
-    categories = JSON.parse(JSON.stringify(categories))
+    const categories = await this.Category.findAll({ raw: true })
+    const products = await this.Product.findAll({ raw: true })
 
     categories.map(function (category) {
       category.products = products
@@ -50,7 +48,8 @@ class ProductController {
 
     if (aProduct) {
       console.log(`Modification product ${aProduct.name} en ${name}`)
-      this.Product.update({ name: name, ref: ref }, { where: { productId: id } })
+      await this.Product.update({ name: name, ref: ref }, { where: { productId: id } })
+      await this.Product.save()
     } else {
       console.log(`Création nouveau product ${name}`)
       this.Product.create({ name, ref, price, categoryId })

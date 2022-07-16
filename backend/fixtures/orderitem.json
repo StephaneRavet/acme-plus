@@ -5,7 +5,7 @@
       "orderItemId": 1,
       "orderId": 1,
       "productId": 4,
-      "price": "132.90",
+      "price": 132.90,
       "quantity": 2
     }
   },
@@ -15,7 +15,7 @@
       "orderItemId": 2,
       "orderId": 2,
       "productId": 9,
-      "price": "125.96",
+      "price": 125.96,
       "quantity": 1
     }
   },
@@ -25,7 +25,7 @@
       "orderItemId": 3,
       "orderId": 2,
       "productId": 1,
-      "price": "1059.90",
+      "price": 1059.90,
       "quantity": 1
     }
   },
@@ -35,7 +35,7 @@
       "orderItemId": 4,
       "orderId": 3,
       "productId": 7,
-      "price": "105.00",
+      "price": 105.00,
       "quantity": 1
     }
   }
