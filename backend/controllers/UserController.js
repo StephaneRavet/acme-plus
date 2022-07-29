@@ -14,10 +14,32 @@ class UserController {
     this.Product = db.product
   }
 
-  async tobasket(userId, product) {
+  async getCart(userId) {
+    const cart = await this.Order.findOne({ where: { userId, orderDatetime: null }, raw: true })
+    if (cart) {
+      const tmc = parseFloat((cart.amount * 0.4).toFixed(2))
+      const total = cart.amount + tmc
+      let orderItems = await this.OrderItem.findAll({
+        where: { orderId: cart.orderId },
+        include: this.Product,
+      })
+      orderItems = JSON.parse(JSON.stringify(orderItems))
+      return {
+        ...cart,
+        products: orderItems.map(item => ({ ...item, total: item.price * item.quantity })),
+        tmc,
+        total
+      }
+    } else {
+      return { products: [], amount: 0, tmc: 0, total: 0 }
+    }
+  }
+
+  async toCart(userId, product) {
     // Recherche du produit demandé, dans la BDD
-    product = product?.productId && (await this.Product.findOne({ where: { productId: product.productId } })).toJSON()
-    if (userId && product) {
+    const productExists = product?.productId && (await this.Product.findOne({ where: { productId: product.productId } })).toJSON()
+    if (userId && productExists) {
+      product = { ...product, ...productExists } // conserve la quantité, maj avec données DBB
       // Recherche du panier en cours ou création d'un nouveau
       // un panier est une commande non validée, donc sans orderDatetime
       const orderCart = await this.Order.findOne({ where: { userId, orderDatetime: null } }) ?? await this.Order.create({ userId, orderDatetime: null })
@@ -25,8 +47,13 @@ class UserController {
       // Recherche s'il y a déjà ce produit dans le panier
       const cartItem = await this.OrderItem.findOne({ where: { orderId: cart.orderId, productId: product.productId } })
       if (cartItem) {
-        await cartItem.update({ quantity: product.quantity })
-        await cartItem.save()
+        // S'il existe déjà -> mise à jour
+        if (product.quantity > 0) {
+          await cartItem.update({ quantity: product.quantity })
+          await cartItem.save()
+        } else {
+          await cartItem.destroy()
+        }
       } else {
         await this.OrderItem.create({ productId: product.productId, quantity: 1, price: product.price, orderId: cart.orderId })
       }
@@ -40,46 +67,9 @@ class UserController {
     }
   }
 
-  async getBasket(userId) {
-    const order = await this.Order.findOne({ where: { userId, orderDatetime: null }, raw: true })
-    if (order) {
-      const tmc = parseFloat((order.amount * 0.4).toFixed(2))
-      const total = order.amount + tmc
-      let orderItems = await this.OrderItem.findAll({
-        where: { orderId: order.orderId },
-        include: this.Product,
-      })
-      orderItems = JSON.parse(JSON.stringify(orderItems))
-      return {
-        ...order,
-        products: orderItems.map(item => ({ ...item, total: item.price * item.quantity })),
-        tmc,
-        total
-      }
-    } else {
-      return { products: [], amount: 0, tmc: 0, total: 0 }
-    }
-  }
-
-  async updateBasket(product) {
-    if (product) {
-      const alreadyExist = this.basket.find(p => product.productId == p.productId)
-      if (alreadyExist) {
-        const index = this.basket.findIndex(p => p.productId == product.productId);
-        if (product.quantity == '0') {
-          this.basket.splice(index, 1)
-        } else {
-          this.basket[index].quantity = product.quantity
-          this.basket[index].total = lineCalculate(this.basket[index])
-        }
-      }
-    }
-  }
-
-
   async checkout(userId) {
-    const basket = this.getBasket()
-    const order = await this.Order.create({ amount: basket.total, userId })
+    const cart = this.getCart()
+    const order = await this.Order.create({ amount: cart.total, userId })
     for (const product of this.basket) {
       await this.OrderItem.create({
         orderId: order.orderId,

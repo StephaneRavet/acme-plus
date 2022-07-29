@@ -14,7 +14,7 @@ function Cart() {
   useEffect(() => { getCart() }, [getCart])
 
   const onQuantityChange = useCallback(async (productId, quantity) => {
-    await axios.patch('/user/basket', { product: { productId, quantity } })
+    await axios.post('/user/tobasket', { product: { productId, quantity } })
     await getCart()
   }, [getCart])
 
